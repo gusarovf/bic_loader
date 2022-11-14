@@ -10,8 +10,7 @@ const mainTablesIndexesQueryArr = (postfix: string = ""): string[] => [
   `CREATE INDEX IF NOT EXISTS bic_code${postfix} ON ${mainPfxTbls.bic}${postfix} (bic);`,
 ]
 
-export const buildHelpTablesIndexes = async (
-  postfix: string = ""
+export const buildNonPfxTblsIndexes = async (
 ): Promise<void> => {
   const query = nonPfxTblsIndexesQueryArr().join(" ")
   try {

@@ -11,7 +11,7 @@ import {
   updateUpdateTablesExist,
 } from "./database/actions/updates"
 import {
-  buildHelpTablesIndexes,
+  buildNonPfxTblsIndexes,
   buildMainTablesIndexes,
 } from "./database/actions/indexes"
 
@@ -47,7 +47,7 @@ const loadUpdate = async (): Promise<void> => {
   console.log("Update initiated.")
 
   await upHelpTables()
-  await buildHelpTablesIndexes()
+  await buildNonPfxTblsIndexes()
 
   let latestUpdatePostfix = (await getLatestUpdate())?.tablesPostfix
 
