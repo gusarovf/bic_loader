@@ -10,6 +10,10 @@ import {
   updateUpdateRecord,
   updateUpdateTablesExist,
 } from "./database/actions/updates"
+import {
+  buildHelpTablesIndexes,
+  buildMainTablesIndexes,
+} from "./database/actions/indexes"
 
 const insertUpdate = async (postfix: string) => {
   const bics = await getBic(cfg.bicSource.extended)
@@ -27,8 +31,11 @@ const insertUpdate = async (postfix: string) => {
   const preparedBics = prepareBic(bics, postfix, newUpdate!.id)
   const result = await transact([preparedBics])
 
-  if (result) await updateUpdateRecord(newUpdate!.id, true, true)
-  console.log("Loading ended. \n")
+  if (result) {
+    await updateUpdateRecord(newUpdate!.id, true, true)
+    await buildMainTablesIndexes(postfix)
+    console.log("Loading ended. \n")
+  }
 }
 
 const loadUpdate = async (): Promise<void> => {
@@ -40,6 +47,8 @@ const loadUpdate = async (): Promise<void> => {
   console.log("Update initiated.")
 
   await upHelpTables()
+  await buildHelpTablesIndexes()
+
   let latestUpdatePostfix = (await getLatestUpdate())?.tablesPostfix
 
   if (!latestUpdatePostfix) {
