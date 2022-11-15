@@ -8,7 +8,6 @@ RUN npm install
 COPY . .
 RUN npm run build && npm prune --production
 
-
 FROM node:18-alpine
 
 WORKDIR /app
